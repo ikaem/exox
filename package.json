@@ -1,0 +1,11 @@
+{
+  "name": "exox",
+  "version": "1.0.0",
+  "description": "Tic Tac Toe game for two players",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "kaem",
+  "license": "ISC"
+}
