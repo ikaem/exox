@@ -1,0 +1,21 @@
+@import url("https://fonts.googleapis.com/css2?family=Catamaran:wght@900&family=Lato:wght@700;900&display=swap");
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.game-cell {
+  @apply flex justify-center items-center shadow-2xl bg-teal-500 cursor-pointer;
+}
+
+.player-icon {
+    @apply font-catamaran bg-gradient-to-b from-teal-700 to-teal-300 rounded-full flex items-center justify-center w-20 h-20 text-yellow-400 text-5xl font-black shadow-2xl text-shadow;
+}
+
+.text-shadow {
+    text-shadow: 0 2px 3px rgba(0,0,0,0.25);
+}
+
+.win-icon {
+    @apply from-red-400 to-red-800 text-white;
+}
