@@ -182,6 +182,8 @@ export default class Exox {
     this.gameMoves = [];
     this.roundWinner = "";
     this.playerOnMove = `X`;
+
+    this.displayGameStatus();
   };
 
   displayGameStatus = () => {
