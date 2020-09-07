@@ -15,6 +15,7 @@ class Exox {
   // helper methods
   createPlayerIcon = () =>
     `<span data-player-icon class="player-icon">${this.playerOnMove}</span>`;
+
   changePlayer = () =>
     (this.playerOnMove = this.playerOnMove === "X" ? "O" : "X");
 
@@ -29,12 +30,72 @@ class Exox {
           >${message}</span
         >`;
 
+  createGridCell = (): HTMLDivElement => {
+    const gridCell = document.createElement("div");
+    gridCell.classList.add("game-cell", "hover:bg-teal-400");
+
+    // this is not even needed, because we dont need to specifically select this cell, we already have it selected...
+    gridCell.setAttribute("data-game-cell", "");
+
+    // just testing
+    gridCell.addEventListener("click", (event) => {
+      console.log("hello");
+
+      this.insertIcon(event.currentTarget as HTMLDivElement);
+      this.checkGameStatus(
+        (event.currentTarget as HTMLDivElement).dataset as CellLocation
+      );
+      this.displayGameStatus();
+    }, { once: true });
+
+    return gridCell;
+  };
+
+  removeGridCells = () => {
+    while (this.gameCellsContainer.firstChild) {
+      this.gameCellsContainer.removeChild(this.gameCellsContainer.firstChild);
+    }
+  };
+
+  appendGridCells = () => {
+    let col = 1;
+    let row = 0;
+    let dg1 = "";
+    let dg2 = "";
+
+    const cells = new Array(9).fill("");
+
+    cells.map((_, index) => {
+      // creating the cell
+
+      const gridCell = this.createGridCell();
+
+      if (col > 3) col = 1;
+      if (index % 3 === 0) row++;
+      if (index % 4 === 0) dg1 = "true";
+      if (index % 2 === 0 && index && index !== 8) dg2 = "true";
+
+      gridCell.dataset.cellCol = col.toString();
+      gridCell.dataset.cellRow = row.toString();
+      gridCell.dataset.cellDg1 = dg1;
+      gridCell.dataset.cellDg2 = dg2;
+
+      this.gameCellsContainer.appendChild(gridCell);
+
+      col++;
+      dg1 = "";
+      dg2 = "";
+    });
+  };
+
   constructor(
     public xScore: HTMLSpanElement,
     public oScore: HTMLSpanElement,
-    public gameStatusBox: HTMLDivElement
+    public gameStatusBox: HTMLDivElement,
+    public gameCellsContainer: HTMLDivElement
   ) {
-    this.isGameOn = true;
+    // this.isGameOn = true;
+    this.resetGame();
   }
 
   insertIcon = (target: HTMLDivElement) => {
@@ -44,10 +105,6 @@ class Exox {
     target.innerHTML = this.createPlayerIcon();
     this.gameMoves.push(this.playerOnMove);
     // target.removeEventListener("click", clickListener, false)
-
-    // just test
-    // console.log("game moves:", this.gameMoves);
-    // console.log("player on move:", this.playerOnMove);
   };
 
   checkGameStatus = (dataset: CellLocation) => {
@@ -71,7 +128,6 @@ class Exox {
     // console.log(dataset.cellCol);
 
     // check if there are any other elements with this column
-
     const columnCells = document.querySelectorAll(
       `[data-cell-col='${dataset.cellCol}']`
     );
@@ -139,17 +195,25 @@ class Exox {
 
     if (this.gameMoves.length < 6) return this.changePlayer();
 
+    // the game is a tie
     // console.log("The game ended in a tie!");
-
     this.isGameOn = false;
     this.displayGameScore();
     return;
   };
 
-  startNewGame = (gameCells: NodeListOf<Element>) => {
-    gameCells.forEach((cell) => {
-      cell.innerHTML = "";
-    });
+  startNewGame = () => {
+    // gameCells.forEach((cell) => {
+    //   cell.innerHTML = "";
+    // });
+
+    this.removeGridCells();
+
+    this.appendGridCells();
+
+    // start a function that will be appendGridCells
+
+    // end of function append grid cells
 
     // resetting event listeners
 
@@ -174,8 +238,6 @@ class Exox {
   };
 
   displayGameStatus = () => {
-    // updating the box
-
     // regular move
     if (this.isGameOn)
       return (this.gameStatusBox.innerHTML = this.createMessageBox("to move"));
@@ -210,11 +272,15 @@ class Exox {
     this.oScore.textContent = oWins.toString();
   };
 
-  resetGame = (gameCells: NodeListOf<Element>) => {
-    gameCells.forEach((cell) => {
-      cell.innerHTML = "";
-    });
+  resetGame = () => {
+    // gameCells.forEach((cell) => {
+    //   cell.innerHTML = "";
+    // });
 
+
+
+    this.removeGridCells();
+    this.appendGridCells();
 
     this.isGameOn = true;
     this.roundWinner = "";
@@ -224,16 +290,31 @@ class Exox {
 
     this.displayGameScore();
     this.displayGameStatus();
+
+    console.log("current move", this.playerOnMove)
   };
 }
 
 // dom selectors
 const playerXScore = document.getElementById("x-score") as HTMLSpanElement;
 const playerOScore = document.getElementById("o-score") as HTMLSpanElement;
-const playGridCells = document.querySelectorAll("[data-game-cell]");
+
+const gameGrid = document.getElementById("game-grid") as HTMLDivElement;
+
 const gameStatusScreen = document.getElementById(
   "game-status"
 ) as HTMLDivElement;
+
+// game instance
+const exoxGame = new Exox(
+  playerXScore,
+  playerOScore,
+  gameStatusScreen,
+  gameGrid
+);
+
+const playGridCells = document.querySelectorAll("[data-game-cell]");
+
 const newGameBtn = document.getElementById(
   "new-game-button"
 ) as HTMLButtonElement;
@@ -241,39 +322,29 @@ const resetScoreBtn = document.getElementById(
   "reset-score-button"
 ) as HTMLButtonElement;
 
-// game instance
-const exoxGame = new Exox(playerXScore, playerOScore, gameStatusScreen);
-
 // event listeners
 
-const clickListener = (event: Event) => {
-  exoxGame.insertIcon(event.currentTarget as HTMLDivElement);
-  exoxGame.checkGameStatus(
-    (event.currentTarget as HTMLDivElement).dataset as CellLocation
-  );
-  exoxGame.displayGameStatus();
-};
+// const clickListener = (event: Event) => {
+//   exoxGame.insertIcon(event.currentTarget as HTMLDivElement);
+//   exoxGame.checkGameStatus(
+//     (event.currentTarget as HTMLDivElement).dataset as CellLocation
+//   );
+//   exoxGame.displayGameStatus();
+// };
 
 //
 // playGridCells.forEach((cell) => {
 //   cell.addEventListener("click", clickListener, { once: true });
 // });
 
-playGridCells.forEach((cell) => {
-  cell.addEventListener("click", clickListener);
-});
+// playGridCells.forEach((cell) => {
+//   cell.addEventListener("click", clickListener);
+// });
 
 newGameBtn.addEventListener("click", () => {
-  exoxGame.startNewGame(playGridCells);
+  exoxGame.startNewGame();
 });
 
 resetScoreBtn.addEventListener("click", () => {
-  exoxGame.resetGame(playGridCells);
+  exoxGame.resetGame();
 });
-
-// dont need
-
-const winnerCharacter = document.getElementById(
-  "winner-icon"
-) as HTMLSpanElement;
-const gameMessage = document.getElementById("game-message");
