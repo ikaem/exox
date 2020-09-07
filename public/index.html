@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>EXOX</title>
     <link rel="stylesheet" href="styles.css" />
-    <script src="app.js" defer></script>
+    <script src="bundle.js" type="module"></script>
   </head>
   <body class="h-full bg-teal-600 font-lato">
     <main class="pt-16 h-full">
@@ -15,110 +15,20 @@
           class="flex justify-between items-center text-center pb-6 border-b border-gray-500 mb-6"
         >
           <span id="x-icon" class="player-icon block">X</span>
-
           <span id="x-score" class="text-white text-4xl text-shadow">0</span>
-
           <span class="text-white text-xl">:</span>
-
           <span id="o-score" class="text-white text-4xl text-shadow">0</span>
-
           <span id="o-icon" class="player-icon h-20 block w-20">O</span>
         </div>
         <div
           id="game-grid"
           class="grid h-full w-full grid-cols-3 grid-rows-3 justify-center gap-1"
-        >
-          <!-- <div
-            data-game-cell
-            class="game-cell hover:bg-teal-400"
-            data-cell-col="1"
-            data-cell-row="1"
-            data-cell-dg1="true"
-            data-cell-dg2=""
-          ></div>
-          <div
-            data-game-cell
-            class="game-cell hover:bg-teal-400"
-            data-cell-col="2"
-            data-cell-row="1"
-            data-cell-dg1=""
-            data-cell-dg2=""
-          ></div>
-          <div
-            data-game-cell
-            class="game-cell hover:bg-teal-400"
-            data-cell-col="3"
-            data-cell-row="1"
-            data-cell-dg1=""
-            data-cell-dg2="true"
-          ></div>
-          <div
-            id="test"
-            data-game-cell
-            class="game-cell hover:bg-teal-400"
-            data-cell-col="1"
-            data-cell-row="2"
-            data-cell-dg1=""
-            data-cell-dg2=""
-          ></div>
-          <div
-            data-game-cell
-            class="game-cell hover:bg-teal-400"
-            data-cell-col="2"
-            data-cell-row="2"
-            data-cell-dg1="true"
-            data-cell-dg2="true"
-          ></div>
-          <div
-            data-game-cell
-            class="game-cell hover:bg-teal-400"
-            data-cell-col="3"
-            data-cell-row="2"
-            data-cell-dg1=""
-            data-cell-dg2=""
-          ></div>
-          <div
-            data-game-cell
-            class="game-cell hover:bg-teal-400"
-            data-cell-col="1"
-            data-cell-row="3"
-            data-cell-dg1=""
-            data-cell-dg2="true"
-          ></div>
-          <div
-            data-game-cell
-            class="game-cell hover:bg-teal-400"
-            data-cell-col="2"
-            data-cell-row="3"
-            data-cell-dg1=""
-            data-cell-dg2=""
-          ></div>
-          <div
-            data-game-cell
-            class="game-cell hover:bg-teal-400"
-            data-cell-col="3"
-            data-cell-row="3"
-            data-cell-dg1="true"
-            data-cell-dg2=""
-          ></div> -->
-        </div>
+        ></div>
 
         <div
           id="game-status"
           class="h-32 flex justify-evenly p-6 my-6 items-center font-lato bg-gradient-to-b from-gray-700 to-gray-900 shadow-xl rounded"
-        >
-          <!-- <span id="winner-icon" class="player-icon hidden">X</span>
-          <span
-            id="game-message"
-            class="text-white text-4xl text-shadow font-black"
-            >Wins!</span
-          > -->
-
-
-
-
-
-        </div>
+        ></div>
         <button
           id="new-game-button"
           class="bg-gradient-to-b from-white to-gray-400 rounded shadow-2xl text-2xl block w-full p-2 text-shadow font-black text-gray-900 mb-6"
